@@ -71,7 +71,7 @@ export function removeKeysFromQuery({ searchParams, keysToRemove }: RemoveUrlQue
 
 // DEBOUNCE
 export const debounce = (func: (...args: any[]) => void, delay: number) => {
-  let timeoutId: number | null;
+  let timeoutId: NodeJS.Timeout;
   return (...args: any[]) => {
     if (timeoutId) clearTimeout(timeoutId);
     timeoutId = setTimeout(() => func.apply(null, args), delay);

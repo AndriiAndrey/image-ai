@@ -5,7 +5,7 @@ interface MongooseConnection {
   promise: Promise<Mongoose> | null;
 }
 
-const MONGODB_URL: string = process.env.MONGODB_URL;
+const MONGODB_URL: string = process.env.MONGODB_URL || '';
 
 let cached: MongooseConnection = (global as any).mongoose;
 
@@ -19,7 +19,7 @@ export const connectToDatabase = async () => {
   if (!MONGODB_URL) throw new Error('Missing MONGODB_URL');
 
   cached.promise =
-    cached.promise || connect(MONGODB_URL, { db: 'imaginify', bufferCommands: false });
+    cached.promise || connect(MONGODB_URL, { dbName: 'imaginify', bufferCommands: false });
 
   cached.promise = Promise.resolve(cached.promise);
 
