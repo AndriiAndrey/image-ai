@@ -42,7 +42,7 @@ const Checkout: FC<IProps> = ({ plan, amount, credits, buyerId }) => {
         className: 'error-toast',
       });
     }
-  }, []);
+  }, [toast]);
 
   const onCheckout = async () => {
     const transaction = {

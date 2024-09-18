@@ -1,24 +1,24 @@
 import { IImage } from '@/lib/database/models/image.model';
 
 // ====== USER PARAMS
-declare type CreateUserParams = {
+export interface CreateUserParams {
   clerkId: string;
   email: string;
   username: string;
   firstName: string;
   lastName: string;
   photo: string;
-};
+}
 
-declare type UpdateUserParams = {
+export interface UpdateUserParams {
   firstName: string;
   lastName: string;
   username: string;
   photo: string;
-};
+}
 
 // ====== IMAGE PARAMS
-declare type AddImageParams = {
+export interface AddImageParams {
   image: {
     title: string;
     publicId: string;
@@ -34,9 +34,9 @@ declare type AddImageParams = {
   };
   userId: string;
   path: string;
-};
+}
 
-declare type UpdateImageParams = {
+export interface UpdateImageParams {
   image: {
     _id: string;
     title: string;
@@ -53,9 +53,9 @@ declare type UpdateImageParams = {
   };
   userId: string;
   path: string;
-};
+}
 
-declare type Transformations = {
+export interface Transformations {
   restore?: boolean;
   fillBackground?: boolean;
   remove?: {
@@ -69,60 +69,60 @@ declare type Transformations = {
     multiple?: boolean;
   };
   removeBackground?: boolean;
-};
+}
 
 // ====== TRANSACTION PARAMS
-declare type CheckoutTransactionParams = {
+export interface CheckoutTransactionParams {
   plan: string;
   credits: number;
   amount: number;
   buyerId: string;
-};
+}
 
-declare type CreateTransactionParams = {
+export interface CreateTransactionParams {
   stripeId: string;
   amount: number;
   credits: number;
   plan: string;
   buyerId: string;
   createdAt: Date;
-};
+}
 
-declare type TransformationTypeKey = 'restore' | 'fill' | 'remove' | 'recolor' | 'removeBackground';
+export type TransformationTypeKey = 'restore' | 'fill' | 'remove' | 'recolor' | 'removeBackground';
 
 // ====== URL QUERY PARAMS
-declare type FormUrlQueryParams = {
+export interface FormUrlQueryParams {
   searchParams: string;
   key: string;
   value: string | number | null;
-};
+}
 
-declare type UrlQueryParams = {
+export interface UrlQueryParams {
   params: string;
   key: string;
   value: string | null;
-};
+}
 
-declare type RemoveUrlQueryParams = {
+export interface RemoveUrlQueryParams {
   searchParams: string;
   keysToRemove: string[];
-};
+}
 
-declare type SearchParamProps = {
+export interface SearchParamProps {
   params: { id: string; type: TransformationTypeKey };
   searchParams: { [key: string]: string | string[] | undefined };
-};
+}
 
-declare type TransformationFormProps = {
+export interface TransformationFormProps {
   action: 'Add' | 'Update';
   userId: string;
   type: TransformationTypeKey;
   creditBalance: number;
   data?: IImage | null;
   config?: Transformations | null;
-};
+}
 
-declare type TransformedImageProps = {
+export interface TransformedImageProps {
   image: any;
   type: string;
   title: string;
@@ -130,4 +130,4 @@ declare type TransformedImageProps = {
   isTransforming: boolean;
   hasDownload?: boolean;
   setIsTransforming?: React.Dispatch<React.SetStateAction<boolean>>;
-};
+}
