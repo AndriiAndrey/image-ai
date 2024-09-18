@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState, useTransition } from 'react';
+import { FC, useEffect, useState, useTransition } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -26,6 +26,7 @@ import { updateCredits } from '@/lib/actions/user.actions';
 import { aspectRatioOptions, creditFee, defaultValues, transformationTypes } from '@/constants';
 import { addImage, updateImage } from '@/lib/actions/image.actions';
 import { TransformationFormProps, Transformations } from '@/types';
+import InsufficientCreditsModal from '../InsufficientCreditsModal';
 
 export const formSchema = z.object({
   title: z.string(),
@@ -153,7 +154,7 @@ const TransformationForms: FC<TransformationFormProps> = (props) => {
       setNewTransformation((prev: any) => ({
         ...prev,
         [type]: {
-          ...prev[type],
+          ...prev?.[type],
           [field === 'prompt' ? 'prompt' : 'to']: value,
         },
       }));
@@ -174,9 +175,17 @@ const TransformationForms: FC<TransformationFormProps> = (props) => {
     });
   }
 
+  useEffect(() => {
+    if (image && (type === 'restore' || type === 'removeBackground')) {
+      setNewTransformation(transformation.config);
+    }
+  }, [image, transformation.config, type]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {creditBalance < Math.abs(creditFee) && <InsufficientCreditsModal />}
+
         <CustomField
           control={form.control}
           name="title"
@@ -194,7 +203,7 @@ const TransformationForms: FC<TransformationFormProps> = (props) => {
             render={({ field }) => (
               <Select
                 onValueChange={(value) => onSelect(value, field.onChange)}
-                defaultValue={field.value}
+                value={field.value}
               >
                 <SelectTrigger className="select-field">
                   <SelectValue placeholder="Select size" />
